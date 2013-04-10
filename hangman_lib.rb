@@ -1,5 +1,5 @@
 def set_up(lives, letters_already_guessed)
- lives = 10
+ lives = 15
  letters_already_guessed = []
 end
 
