@@ -1,6 +1,9 @@
-def set_up(lives, letters_already_guessed)
- lives = 10
- letters_already_guessed = []
+def set_up
+@lives=10
+@already_guessed_letters=[]
+@wrong_letters=[]
+@letter=[]
+@progress=[]
 end
 
 def greeting
@@ -9,39 +12,49 @@ puts
 end
 
 def get_word 
-File.readlines("./words").shuffle.first.strip
+secret_word=File.readlines("./words").shuffle.first.strip
 end
 
-def lives_left?(lives)
+def lives_left? (lives)
  lives > 0
 end
 
-def show_progress (secret_word, letters_already_guessed)
+def update_progress (secret_word)
+ @progress=""
  secret_word.chars.each do |letter|
   # chars: give me every letter + each ist ein loop do + dazu einen varible in der röhre (irgendein name)
   # vergleichen von geratenem buchstaben mit wortbuchstaben
-  if  letters_already_guessed.include?(letter)
-   print letter
+  if  @already_guessed_letters.include?(letter)
+   @progress = @progress + letter
   else
-   print "_ "
+   @progress = @progress + "_"
   end
  end
  puts
 end
 
+def show_progress (secret_word)
+  update_progress(secret_word)
+  puts @progress
+end
+
 def guess_letter (guessed_letter)
  guessed_letter.strip.downcase
- guessed_letter.downcase
- guessed_letter.
 end
 
 def letter_in_word (word, letter)
   word.include?(letter)
 end
 
-def word_finished (secret_word, letters_already_guessed)
-# wenn nicht geratene Buchstaben include? antwortbuchstaben, dann falsch, sonst richtig
-  secret_word.chars.all? { |letter| letters_already_guessed.include?(letter)}
+def word_finished
+  update_progress
+  @progress == @secret_word
+end
+
+def item_in_list?(letter, letters_already_guessed)
+    letters_already_guessed.include?(letter)
+    # wieso kommt hier kein @ vor letters_already... 
+    # wieso kommt das überhaupt nochmal? ist doch schon progress
 end
 
 def win (secret_word)
@@ -51,9 +64,9 @@ puts
 exit
 end 
 
-def loose_a_live (lives)
-lives = lives-1
-puts "You loose a live! #{lives} left"
+def loose_a_live
+@lives =@lives-1
+puts "You loose a live! #{@lives} left"
 puts
 end
 

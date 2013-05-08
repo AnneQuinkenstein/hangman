@@ -1,21 +1,24 @@
 require_relative './hangman_lib'
 
-set_up(lives, letters_already_guessed)
+set_up
 greeting
-secret_word = get_word
-while lives_left?(lives)
+secret_word=get_word
+while lives_left?(@lives)
  # while, weil eine linie zurück kommt im floatchart
- show_progress(secret_word, letters_already_guessed)
+ show_progress(secret_word) 
  puts "Rate einen Buchstaben!"
- input gets
- guessed_letter = guess_letter(input)
- letters_already_guessed = letters_already_guessed << guessed_letter
- if letter_in_word(secret_word, @letters_already_guessed.last)
-  if word_finished(secret_word, letters_already_guessed)
-	win(secret_word)
+ guess = guess_letter(gets)
+  letter_has_already_been_guessed =item_in_list?(guess, @already_guessed_letters)
+  @already_guessed_letters << guess
+  if letter_has_already_been_guessed 
+    puts "You already guessed that letter. Try another one."
+  elsif letter_in_word(guess, secret_word)
+    puts "letter in word"
+    if word_finished
+      win (secret_word)
+    end
+  else 
+    loose_a_live
   end
- else
- loose_a_live(lives)
- end
 end
-loose(secret_word)
+loose
